@@ -1,0 +1,47 @@
+@server=http://localhost:4004
+@username=alice
+@password=
+
+
+### Books Draft POST
+# @name Books_Draft_POST
+POST {{server}}/odata/v4/admin/Books
+Content-Type: application/json
+Authorization: Basic {{username}}:{{password}}
+
+{
+  "descr": "descr-1240996"
+}
+
+### Result from POST request above
+@draft={{Books_Draft_POST.response.body.$.bookId}}
+
+### Books draft delete
+# @name Books_draft_DELETE
+DELETE {{server}}/odata/v4/admin/Books(bookId={{draft}},IsActiveEntity=false)
+Content-Type: application/json
+Authorization: Basic {{username}}:{{password}}
+
+### Books Draft Activate
+# @name Books_Draft_Activate
+POST {{server}}/odata/v4/admin/Books(bookId={{draft}},IsActiveEntity=false)/AdminService.draftActivate
+Content-Type: application/json
+Authorization: Basic {{username}}:{{password}}
+
+{}
+
+### Books Drafts GET
+# @name Books_Drafts_GET
+GET {{server}}/odata/v4/admin/Books?$filter=(IsActiveEntity eq false)
+Authorization: Basic {{username}}:{{password}}
+
+
+### Books non-Draft GET
+# @name Books_GET
+GET {{server}}/odata/v4/admin/Books?$filter=(IsActiveEntity eq true)
+Authorization: Basic {{username}}:{{password}}
+
+### Books non-Draft DELETE
+# @name Books_nonDraft_DELETE
+DELETE {{server}}/odata/v4/admin/Books(bookId={{draft}},IsActiveEntity=true)
+Authorization: Basic {{username}}:{{password}}
