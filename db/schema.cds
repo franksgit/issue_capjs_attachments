@@ -4,7 +4,6 @@ namespace sap.capire.bookshop;
 
 entity Books  {
   key bookId : Integer;
- // key Id: Integer;
   descr  : String(50) default 'test';
   attachments : Composition of many Attachments;
 }
